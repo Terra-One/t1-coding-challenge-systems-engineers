@@ -1,0 +1,4 @@
+# Do not put actual passwords in this file
+#
+DATABASE_URL=mongodb://127.0.0.1:27017/profitdb
+DATABASE_TEST_URL=mongodb://localhost:27017/profitdb

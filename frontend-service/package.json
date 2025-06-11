@@ -7,7 +7,7 @@
     "start": "node dist/index.js",
     "test": "vitest"
   },
-  "author": "Lukas Zöllner",
+  "author": "Joe Ben",
   "license": "ISC",
   "description": "",
   "devDependencies": {
@@ -19,6 +19,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.19.2",
-    "node-rdkafka": "^3.1.0"
+    "node-rdkafka": "^3.1.0",
+    "mongoose": "^7.0.0"
   }
 }

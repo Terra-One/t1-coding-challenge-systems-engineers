@@ -5,7 +5,7 @@ import { RawMarketMessage, RawTradeMessage } from './types';
 type RawMessage = RawMarketMessage | RawTradeMessage;
 
 const producerConfig: ProducerGlobalConfig = {
-    'metadata.broker.list': 'kafka:9092',
+    'metadata.broker.list': 'localhost:9092',
     'dr_cb': true,  // Delivery report callback
 };
 
@@ -28,6 +28,7 @@ producer.on('ready', () => {
 });
 
 function onMessage(message: RawMessage) {
+
     producer.produce(
         message.messageType,
         null,
@@ -49,9 +50,9 @@ async function fetchStreamAndProduce() {
         console.error('Response body is null');
         return;
     }
-
-    const streamProcessor = new StreamProcessor(onMessage);
-
+ const streamProcessor = new StreamProcessor((message) => {
+        onMessage(message);
+    });
     await streamProcessor.processStream(response.body);
 
     console.log('Streaming ended');

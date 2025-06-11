@@ -2,6 +2,7 @@ import cors from 'cors';
 import express from 'express';
 import { getOpenPosition } from './open-position';
 import { getPnls } from './pnl';
+import { connectDB } from './db';
 
 export const app = express();
 
@@ -24,6 +25,7 @@ app.get('/open-position', (req, res) => {
     // Function to send the open position periodically
     const sendOpenPosition = () => {
         const openPosition = getOpenPosition();
+        console.log(`Sending open position: ${openPosition}`);
         res.write(toStreamMessage(openPosition.toFixed(1)));
     };
 
@@ -40,12 +42,13 @@ app.get('/open-position', (req, res) => {
     });
 });
 
-app.get('/pnl', (req, res) => {
+app.get('/pnl', async (req, res) => {
     // Set headers for the streaming response
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
-
+    
+    await connectDB();
     // Function to send the pnl periodically
     const sendPnl = async () => {
         const pnls = await getPnls();

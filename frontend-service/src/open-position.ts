@@ -9,8 +9,10 @@ export function getOpenPosition() {
 
 const consumer = new Kafka.KafkaConsumer({
     'group.id': 'frontend-service',
-    'metadata.broker.list': 'kafka:9092'
-}, {});
+    'metadata.broker.list': 'localhost:9092'
+}, {
+    'auto.offset.reset': 'earliest'
+});
 
 consumer.connect({}, (err, metaData) => {
     if (err) {
@@ -25,6 +27,7 @@ consumer.on('ready', () => {
     consumer.subscribe(['trades']);
     consumer.consume();
 }).on('data', (data) => {
+
     if (!data.value) {
         throw new Error('Invalid message');
     }
@@ -33,7 +36,6 @@ consumer.on('ready', () => {
     if (message.messageType !== 'trades') {
         return;
     }
-
     const tradeMessage = toTradeMessage(message);
     if (tradeMessage.tradeType === 'BUY') {
         buyVolume += tradeMessage.volume

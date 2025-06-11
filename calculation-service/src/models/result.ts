@@ -1,10 +1,5 @@
 import mongoose from 'mongoose';
 
-export const connectDB = async () => {
-  const uri = 'mongodb://localhost:27017/profitdb';
-  await mongoose.connect(uri);
-  console.log('Connected to MongoDB');
-};
 
 const resultSchema = new mongoose.Schema({
   symbol: String,
