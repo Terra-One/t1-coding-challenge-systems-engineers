@@ -41,8 +41,8 @@ services:
     build: ./kafka-producer
     volumes:
       - ./kafka-producer:/app
-      - kafka_producer:/app/node_modules
-    command: sh -c "npm run build && exec node dist/index.js"
+      - /app/node_modules
+      - /app/dist
     depends_on:
       - kafka
     restart: on-failure
@@ -52,8 +52,8 @@ services:
     build: ./frontend-service
     volumes:
       - ./frontend-service:/app
-      - frontend_service:/app/node_modules
-    command: sh -c "npm run build && exec node dist/index.js"
+      - /app/node_modules
+      - /app/dist
     ports:
       - "3001:3001"
     depends_on:
@@ -65,8 +65,8 @@ services:
     build: ./calculation-service
     volumes:
       - ./calculation-service:/app
-      - calculation_service:/app/node_modules
-    command: sh -c "npm run build && exec node dist/index.js"
+      - /app/node_modules
+      - /app/dist
     depends_on:
       - kafka-producer
       - database
@@ -80,7 +80,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./frontend:/app
-      - frontend:/app/node_modules
+      - /app/node_modules
     ports:
       - "3000:3000"
     depends_on:
